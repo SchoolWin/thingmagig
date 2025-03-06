@@ -16,8 +16,11 @@ if 'quiz_completed' not in st.session_state:
     st.session_state.quiz_completed = False
 
 
-#the random chance of the characters
+#List of Science objects
 scienceobjects = ["Thermometer", "Beaker", "Mortar and pestle", "Pipette", "Bunsen burner", "Heat mat", "Safety glasses", "Hot plate", "Test tubes", "Test tube rack"]
+
+if not st.session_state.remaining_objects:
+    st.session_state.remaining_objects = scienceobjects.copy()
 
 st.title("Science Objects Quiz")
 
@@ -27,10 +30,13 @@ if not st.session_state.quiz_completed:
     st.write("If it comes up with an error try press the button again")
     # Show current question number
     st.write(f"Question {st.session_state.current_question + 1} of 10")
+
+
+    #Selects a random object from the list then removes it
+    if not st.session_state.answered and st.session_state.selected_object is None:
+        st.session_state.selected_object = random.choice(st.session_state.remaining_objects)
+        st.session_state.remaining_objects.remove(st.session_state.selected_object)
     
-    # If we need a new question
-    if not st.session_state.answered:
-        st.session_state.selected_object = random.choice(scienceobjects)  # Chooses a random object
         
     # Display image based on selected object
     try:
