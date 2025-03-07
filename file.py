@@ -2,6 +2,8 @@
 import random
 #Imports the website opporator
 import streamlit as st
+#Imports os to find if image exists
+import os
 
 #Sets up status
 if 'current_question' not in st.session_state:
@@ -23,7 +25,7 @@ scienceobjects = [
     "Heat mat", "Safety glasses", "Hot plate", "Test tubes", "Test tube rack"
 ]
 
-#Brings back objects after quiz is reset
+#resets remaining objects if empty
 if not st.session_state.remaining_objects:
     st.session_state.remaining_objects = scienceobjects.copy()
 
@@ -33,6 +35,9 @@ st.title("Science Objects Quiz")
 #Starts loop for 10 questions of quiz
 if not st.session_state.quiz_completed:
     
+    #Tells them to click submit not enter
+    st.write("Click *Submit Answer* Button, not the ENTER key.")
+
     #Shows question number
     st.write(f"Question {st.session_state.current_question + 1} of 10")
 
@@ -44,6 +49,7 @@ if not st.session_state.quiz_completed:
     #Displays image
     try:
         image = f"Images/{st.session_state.selected_object}.webp"
+        os.path.exists(image)
         st.image(image)
     except:
         st.write(f"Showing image for: {st.session_state.selected_object}")
@@ -65,12 +71,13 @@ if not st.session_state.quiz_completed:
         else:
             st.error(f"Incorrect! The correct answer was {st.session_state.selected_object}!")
 
-    #To move to the next question
+    #Shows answer button only after clicking submit
     if st.session_state.answered:
         if st.button("Next Question"):
             if st.session_state.current_question < 9:
                 st.session_state.current_question += 1
                 st.session_state.answered = False
+                st.session_state.selected_object = None #resest for next question
                 st.rerun()
             else:
                 st.session_state.quiz_completed = True
