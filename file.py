@@ -36,7 +36,7 @@ st.title("Science Objects Quiz")
 if not st.session_state.quiz_completed:
     
     #Tells them to click submit not enter
-    st.write("Click *Submit Answer* Button, not the ENTER key.")
+    st.write("Click **Submit Answer** Button, not the ENTER key.")
 
     #Shows question number
     st.write(f"Question {st.session_state.current_question + 1} of 10")
